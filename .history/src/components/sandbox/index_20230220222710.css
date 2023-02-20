@@ -1,0 +1,18 @@
+.logo{
+    line-height: 32px;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.3);
+    font-size: 18px;
+    margin: 10px;
+    text-align: center;
+}
+/* 左侧菜单栏容器 */
+.side-wrap{
+    display: flex;
+    flex-direction: column;
+}
+.menu{
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+}
