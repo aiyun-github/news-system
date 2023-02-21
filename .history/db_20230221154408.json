@@ -183,7 +183,7 @@
       "title": "用户列表",
       "rightId": 2,
       "key": "/user-manage/list",
-      "pagepermisson": 0,
+      "pagepermisson": 1,
       "grade": 2
     },
     {
@@ -323,7 +323,7 @@
       "id": 1,
       "title": "首页",
       "key": "/home",
-      "pagepermisson": 0,
+      "pagepermisson": 1,
       "grade": 1
     },
     {

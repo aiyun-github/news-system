@@ -44,30 +44,14 @@ export default function RightList() {
             render: (item) => {
                 return <Space>
                     {/* 气泡卡片 */}
-                    <Popover
-                        content={<div style={{ textAlign: 'center' }}>
-                            <Switch checked={item.pagepermisson} onChange={() => switchMethod(item)}></Switch>
-                        </div>}
-                        title="页面配置项" trigger={item.pagepermisson ? 'click' : ''}
-                    >
-                        <Button type='link' icon={<EditOutlined />} disabled={!item.pagepermisson}>编辑</Button>
+                    <Popover content={<div style={{textAlign: 'center'}}><Switch></Switch></div>} title="页面配置项" trigger="click">
+                        <Button type='link' icon={<EditOutlined disabled={item.pagepermisson === undefined}/>}>编辑</Button>
                     </Popover>
                     <Button danger type='link' icon={<DeleteOutlined />} onClick={() => confirmMethod(item)}>删除</Button>
                 </Space>
             }
         },
     ]
-    // 页面配置
-    const switchMethod = (item) => {
-        item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
-        setDataSource([...dataSource])
-        if (item.grade === 1) { // 一级菜单
-            // patch补丁请求，只会更改所传的数据
-            axios.patch(`/api/rights/${item.id}`,{pagepermisson: item.pagepermisson})
-        } else { // 二级菜单
-            axios.patch(`/api/children/${item.id}`,{pagepermisson: item.pagepermisson})
-        }
-    }
     // 删除提示
     const confirmMethod = (item) => {
         confirm({

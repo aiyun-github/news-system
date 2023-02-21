@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table, Tag, Space, Modal, Popover, Switch } from 'antd'
+import { Button, Table, Tag, Space, Modal } from 'antd'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import axios from 'axios'
 const { confirm } = Modal
@@ -11,10 +11,10 @@ export default function RightList() {
     useEffect(() => {
         // 获取表格列表数据
         axios.get('/api/rights?_embed=children').then(res => {
-            // 如果children是[]则去掉（或改为字符串），方法一
+            // 如果children是[]则去掉或改为字符串，方法一
             // const tableData = res.data.map(item => ({ ...item, children: item.children?.length && item.children }))
             const tableData = res.data
-            // 如果children是[]则（去掉或）改为字符串，方法二
+            // 如果children是[]则去掉或改为字符串，方法二
             tableData.forEach(element => {
                 if (!element.children.length) {
                     element.children = ''
@@ -43,31 +43,12 @@ export default function RightList() {
             title: '操作',
             render: (item) => {
                 return <Space>
-                    {/* 气泡卡片 */}
-                    <Popover
-                        content={<div style={{ textAlign: 'center' }}>
-                            <Switch checked={item.pagepermisson} onChange={() => switchMethod(item)}></Switch>
-                        </div>}
-                        title="页面配置项" trigger={item.pagepermisson ? 'click' : ''}
-                    >
-                        <Button type='link' icon={<EditOutlined />} disabled={!item.pagepermisson}>编辑</Button>
-                    </Popover>
+                    <Button type='link' icon={<EditOutlined />}>编辑</Button>
                     <Button danger type='link' icon={<DeleteOutlined />} onClick={() => confirmMethod(item)}>删除</Button>
                 </Space>
             }
         },
     ]
-    // 页面配置
-    const switchMethod = (item) => {
-        item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
-        setDataSource([...dataSource])
-        if (item.grade === 1) { // 一级菜单
-            // patch补丁请求，只会更改所传的数据
-            axios.patch(`/api/rights/${item.id}`,{pagepermisson: item.pagepermisson})
-        } else { // 二级菜单
-            axios.patch(`/api/children/${item.id}`,{pagepermisson: item.pagepermisson})
-        }
-    }
     // 删除提示
     const confirmMethod = (item) => {
         confirm({
@@ -84,11 +65,7 @@ export default function RightList() {
     }
     // 删除方法
     const deleteMethod = (item) => {
-        if (item.grade === 1) { // 一级菜单
-            axios.delete(`/api/rights/${item.id}`)
-        } else { // 二级菜单
-            axios.delete(`/api/children/${item.id}`)
-        }
+        axios.delete(`/api/right/${item.id}`)
     }
     return (
         <>

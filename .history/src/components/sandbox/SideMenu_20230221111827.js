@@ -29,6 +29,7 @@ function SideMenu(props) {
     const [menu, setMenu] = useState([])
     useEffect(() => {
         axios.get('/api/rights?_embed=children').then((res) => {
+            console.log(res.data);
             setMenu(handleData(res.data))
         })
     }, [])

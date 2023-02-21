@@ -6,29 +6,29 @@ import { withRouter } from 'react-router-dom'
 import axios from 'axios'
 const { Sider } = Layout;
 
-// key(路由)和图标映射
-const iconList = {
-    '/home': <MailOutlined />,
-    '/user-manage': <SettingOutlined />,
-    '/right-manage': <AppstoreOutlined />,
-    '/news-manage': <AppstoreOutlined />,
-    '/audit-manage': <AppstoreOutlined />,
-    '/publish-manage': <AppstoreOutlined />,
-}
-// 处理接口返回的数据符合menu的格式
-const handleData = (array) => {
-    return array.map(item => {
-        if (item.children && item.children.length) {
-            return item.pagepermisson && { key: item.key, label: item.title, icon: iconList[item.key], children: handleData(item.children) }
-        }
-        return item.pagepermisson && { key: item.key, label: item.title, icon: iconList[item.key] }
-    })
-}
 // 侧边栏菜单组件
 function SideMenu(props) {
     const [menu, setMenu] = useState([])
+    const iconList = {
+        '/home': <MailOutlined />,
+        '/user-manage': <SettingOutlined />,
+        '/right-manage': <AppstoreOutlined />,
+        '/news-manage': <AppstoreOutlined />,
+        '/audit-manage': <AppstoreOutlined />,
+        '/publish-manage': <AppstoreOutlined />,
+    }
+    // 处理接口返回的数据符合menu的格式
+    const handleData = (array) => {
+        return array.map(item => {
+            if (item.children && item.children.length) {
+                return item.pagepermisson && { key: item.key, label: item.title, icon: iconList[item.key], children: handleData(item.children) }
+            }
+            return item.pagepermisson && { key: item.key, label: item.title, icon: iconList[item.key] }
+        })
+    }
     useEffect(() => {
         axios.get('/api/rights?_embed=children').then((res) => {
+            console.log(res.data);
             setMenu(handleData(res.data))
         })
     }, [])
@@ -47,7 +47,7 @@ function SideMenu(props) {
     return (
         <Sider trigger={null} collapsible collapsed={false}>
             <div className='side-wrap'>
-                <div className="logo" >NEWS-SYSTEM</div>
+                <div className="logo" >新闻发布系统</div>
                 <Menu
                     className='menu'
                     onClick={(e) => props.history.push(e.key)}

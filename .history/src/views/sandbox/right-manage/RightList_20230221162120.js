@@ -63,9 +63,9 @@ export default function RightList() {
         setDataSource([...dataSource])
         if (item.grade === 1) { // 一级菜单
             // patch补丁请求，只会更改所传的数据
-            axios.patch(`/api/rights/${item.id}`,{pagepermisson: item.pagepermisson})
+            axios.patch(`/api/rights/${item.id},{pagepermisson: item.pagepermisson}`)
         } else { // 二级菜单
-            axios.patch(`/api/children/${item.id}`,{pagepermisson: item.pagepermisson})
+            axios.patch(`/api/children/${item.id},{pagepermisson: item.pagepermisson}`)
         }
     }
     // 删除提示
