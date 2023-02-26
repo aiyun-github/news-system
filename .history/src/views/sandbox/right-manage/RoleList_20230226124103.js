@@ -28,7 +28,7 @@ export default function RoleList() {
                     setIsModalOpen(true)
                     setCurrentRights(item.rights)
                     setCurrentId(item.id)
-                }}>权限配置</Button>
+                }}>编辑</Button>
                 <Button danger type='link' icon={<DeleteOutlined />} onClick={() => confirmMethod(item)}>删除</Button>
             </Space>
         }
@@ -71,6 +71,7 @@ export default function RoleList() {
     // 配置权限-确定
     const handleOk = () => {
         setIsModalOpen(false)
+
     }
     // 配置权限-取消
     const handleCancel = () => {

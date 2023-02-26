@@ -28,25 +28,21 @@ export default function RoleList() {
                     setIsModalOpen(true)
                     setCurrentRights(item.rights)
                     setCurrentId(item.id)
-                }}>权限配置</Button>
+                }}>编辑</Button>
                 <Button danger type='link' icon={<DeleteOutlined />} onClick={() => confirmMethod(item)}>删除</Button>
             </Space>
         }
     ]
     useEffect(() => {
-        getData()
+        axios.get('/api/roles').then(res => {
+            setDataSource(res.data)
+        })
     }, [])
     useEffect(() => {
         axios.get('/api/rights?_embed=children').then(res => {
             setRightList(res.data)
         })
     }, [])
-    // 获取列表数据
-    const getData = () => {
-        axios.get('/api/roles').then(res => {
-            setDataSource(res.data)
-        })
-    }
     // 删除提示
     const confirmMethod = (item) => {
         confirm({
@@ -63,10 +59,8 @@ export default function RoleList() {
     }
     // 删除方法
     const deleteMethod = (item) => {
-        // setDataSource(dataSource.filter(v => v.id !== item.id))
-        axios.delete(`/api/roles/${item.id}`).then(res => {
-            getData()
-        })
+        setDataSource(dataSource.filter(v => v.id !== item.id))
+        axios.delete(`/api/roles/${item.id}`)
     }
     // 配置权限-确定
     const handleOk = () => {
@@ -75,13 +69,6 @@ export default function RoleList() {
     // 配置权限-取消
     const handleCancel = () => {
         setIsModalOpen(false)
-        setDataSource(dataSource.map(item => {
-            if (item.id === currentId) {
-                return { ...item, rights: currentRights }
-            }
-            return item
-        }))
-        axios.patch(`/api/rights/${currentId}`, { rights: currentRights })
     }
     // 是否勾选
     const onCheck = (checkedKeys) => {

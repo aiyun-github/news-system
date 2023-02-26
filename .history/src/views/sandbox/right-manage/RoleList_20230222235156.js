@@ -28,7 +28,7 @@ export default function RoleList() {
                     setIsModalOpen(true)
                     setCurrentRights(item.rights)
                     setCurrentId(item.id)
-                }}>权限配置</Button>
+                }}>编辑</Button>
                 <Button danger type='link' icon={<DeleteOutlined />} onClick={() => confirmMethod(item)}>删除</Button>
             </Space>
         }
@@ -61,16 +61,18 @@ export default function RoleList() {
             },
         });
     }
+    [branch "main"]
+        remote = origin
+        merge = refs/heads/main
     // 删除方法
     const deleteMethod = (item) => {
-        // setDataSource(dataSource.filter(v => v.id !== item.id))
-        axios.delete(`/api/roles/${item.id}`).then(res => {
-            getData()
-        })
+        setDataSource(dataSource.filter(v => v.id !== item.id))
+        axios.delete(`/api/roles/${item.id}`)
     }
     // 配置权限-确定
     const handleOk = () => {
         setIsModalOpen(false)
+
     }
     // 配置权限-取消
     const handleCancel = () => {
