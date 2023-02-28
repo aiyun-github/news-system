@@ -24,7 +24,7 @@ export default function UserList() {
     }, [])
     // 获取表格列表数据 
     const getData = () => {
-        axios.get('/api/users?_expand=role').then(res => {
+        getUsers('/api/users?_expand=role').then(res => {
             setDataSource(res.data)
         })
     }

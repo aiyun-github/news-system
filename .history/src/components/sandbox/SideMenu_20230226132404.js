@@ -30,7 +30,6 @@ function SideMenu(props) {
     useEffect(() => {
         getData()
     }, [])
-    // 获取菜单栏数据
     const getData = () => {
         axios.get('/api/rights?_embed=children').then((res) => {
             setMenu(handleData(res.data))

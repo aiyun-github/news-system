@@ -13,7 +13,6 @@ export default function UserList() {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false)
     const [roleList, setRoleList] = useState([])
     const [regionList, setRegionList] = useState([])
-    const [current, setCurrent] = useState(null)
     const [isUpdateDisabled, setIsUpdateDisabled] = useState(false)
     const addForm = useRef(null)
     const updateForm = useRef(null)
@@ -45,17 +44,6 @@ export default function UserList() {
         {
             title: '区域',
             dataIndex: 'region',
-            filters: [
-                ...regionList.map(item => ({
-                    text: item.title,
-                    value: item.value,
-                })),
-                {
-                    text: '全球',
-                    value: '全球',
-                }
-              ],
-            onFilter: (value, item) => value === '全球' ? item.region === '' : item.region === value,
             render: (region) => <b>{region ? region : '全球'}</b>
         },
         {
@@ -103,7 +91,6 @@ export default function UserList() {
             setIsUpdateDisabled(false)
         }
         updateForm.current.setFieldsValue(item)
-        setCurrent(item)
 
     }
     // 修改
@@ -111,8 +98,10 @@ export default function UserList() {
         setIsUpdateOpen(false)
         updateForm.current.validateFields().then(value => {
             setIsAddOpen(false)
-            axios.patch(`/api/users/${current.id}`, {
-                ...value
+            axios.post('/api/users', {
+                ...value,
+                roleState: true,
+                default: false
             }).then(res => {
                 getData()
             })

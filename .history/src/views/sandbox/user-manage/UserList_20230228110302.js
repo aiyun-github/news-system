@@ -17,6 +17,7 @@ export default function UserList() {
     const [isUpdateDisabled, setIsUpdateDisabled] = useState(false)
     const addForm = useRef(null)
     const updateForm = useRef(null)
+    import { getUsers } from '@/api/user-manage'
     useEffect(() => {
         getData()
         getRoleList()
@@ -24,7 +25,7 @@ export default function UserList() {
     }, [])
     // 获取表格列表数据 
     const getData = () => {
-        axios.get('/api/users?_expand=role').then(res => {
+        getUsers('/api/users?_expand=role').then(res => {
             setDataSource(res.data)
         })
     }

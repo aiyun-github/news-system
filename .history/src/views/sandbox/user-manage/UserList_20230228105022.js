@@ -55,7 +55,7 @@ export default function UserList() {
                     value: '全球',
                 }
               ],
-            onFilter: (value, item) => value === '全球' ? item.region === '' : item.region === value,
+            onFilter: (value, item) => item.region === value
             render: (region) => <b>{region ? region : '全球'}</b>
         },
         {

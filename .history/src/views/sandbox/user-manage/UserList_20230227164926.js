@@ -10,13 +10,9 @@ export default function UserList() {
     // 存储表格列表数据
     const [dataSource, setDataSource] = useState()
     const [isAddOpen, setIsAddOpen] = useState(false)
-    const [isUpdateOpen, setIsUpdateOpen] = useState(false)
     const [roleList, setRoleList] = useState([])
     const [regionList, setRegionList] = useState([])
-    const [current, setCurrent] = useState(null)
-    const [isUpdateDisabled, setIsUpdateDisabled] = useState(false)
     const addForm = useRef(null)
-    const updateForm = useRef(null)
     useEffect(() => {
         getData()
         getRoleList()
@@ -45,17 +41,6 @@ export default function UserList() {
         {
             title: '区域',
             dataIndex: 'region',
-            filters: [
-                ...regionList.map(item => ({
-                    text: item.title,
-                    value: item.value,
-                })),
-                {
-                    text: '全球',
-                    value: '全球',
-                }
-              ],
-            onFilter: (value, item) => value === '全球' ? item.region === '' : item.region === value,
             render: (region) => <b>{region ? region : '全球'}</b>
         },
         {
@@ -88,37 +73,8 @@ export default function UserList() {
             getData()
         })
     }
-    const handleUpdate = async (item) => {
-        // react状态更新是异步的，这里要改成同步的
-        // 方法一：
-        // setTimeout( ()=> {
-        //     setIsUpdateOpen(true)
-        //     updateForm.current.setFieldsValue(item)
-        // }, 0)
-        // 方法二：
-        await setIsUpdateOpen(true)
-        if (item.roleId === 1) {
-            setIsUpdateDisabled(true)
-        } else {
-            setIsUpdateDisabled(false)
-        }
-        updateForm.current.setFieldsValue(item)
-        setCurrent(item)
+    const handleUpdate = () => {
 
-    }
-    // 修改
-    const updateFormOk = () => {
-        setIsUpdateOpen(false)
-        updateForm.current.validateFields().then(value => {
-            setIsAddOpen(false)
-            axios.patch(`/api/users/${current.id}`, {
-                ...value
-            }).then(res => {
-                getData()
-            })
-        }).catch(err => {
-            console.log(err, 'err')
-        })
     }
     // 删除提示
     const confirmMethod = (item) => {
@@ -174,13 +130,10 @@ export default function UserList() {
                 title="更新用户"
                 okText="更新"
                 cancelText="取消"
-                onCancel={() => {
-                    setIsUpdateOpen(false)
-                    setIsUpdateDisabled(false)
-                }}
+                onCancel={() => setIsUpdateOpen(false)}
                 onOk={() => updateFormOk()}
             >
-               <UserForm roleList={roleList} regionList={regionList} ref={updateForm} isUpdateDisabled={isUpdateDisabled}></UserForm>
+               <UserForm roleList={roleList} regionList={regionList} ref={addForm}></UserForm>
             </Modal>
         </>
     )

@@ -28,14 +28,11 @@ const handleData = (array) => {
 function SideMenu(props) {
     const [menu, setMenu] = useState([])
     useEffect(() => {
-        getData()
-    }, [])
-    // 获取菜单栏数据
-    const getData = () => {
         axios.get('/api/rights?_embed=children').then((res) => {
             setMenu(handleData(res.data))
+            console.log(res.data, 'res.data');
         })
-    }
+    }, [])
     // const items = [
     //     getItem('首页', '/home', <MailOutlined />),
     //     getItem('用户管理', '/user-manage', <AppstoreOutlined />, [
