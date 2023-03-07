@@ -1,35 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { PageHeader, Steps, Button, Space, Form, Input, Select, message, notification } from 'antd'
+import { PageHeader, Steps, Button, Space, Form, Input, Select } from 'antd'
 import style from './News.module.css'
 import axios from 'axios';
-import NewsEditor from '../../../components/news-manage/NewsEditor';
 const { Step } = Steps;
 const { Option } = Select;
 
-export default function NewsAdd(props) {
-    const [current, setCurrent] = useState(0) // 当前步骤
-    const [categoryList, setCategoryList] = useState([]) // 新闻分类list
-    const [formInfo, setFormInfo] = useState({}) // 表单内容
-    const [content, setContent] = useState('') // 富文本内容
-    const User = JSON.parse(localStorage.getItem('token')) // 登录的用户信息
+export default function NewsAdd() {
+    const [current, setCurrent] = useState(0)
+    const [categoryList, setCategoryList] = useState([])
 
     // 下一步
     const handleNext = () => {
         if (current === 0) {
             // 第一步输入校验
             NewsForm.current.validateFields().then(res => {
-                setFormInfo(res)
                 setCurrent(current + 1)
             }).catch(error => {
                 console.log(error)
             })
         } else {
-            // 第二步富文本框校验
-            if(content === '' || content.trim() === '<p></p>') {
-                message.error('新闻内容不能为空')
-            } else {
-                setCurrent(current + 1)
-            }
+            setCurrent(current + 1)
         }
     }
 
@@ -47,33 +37,6 @@ export default function NewsAdd(props) {
             setCategoryList(res.data)
         })
     }, [])
-
-    // 保存草稿箱|提交审核
-    const handleSave = (auditState) => {
-        axios.post('/api/news', {
-            ...formInfo,
-            content,
-            region: User.region ? User.region : '全球',
-            author: User.username,
-            roleId: User.roleId,
-            auditState,
-            publishState: 0,
-            createTime: Date.now(),
-            star: 0,
-            view: 0,
-            // publishTime: 0,
-        }).then(res => {
-            // 路由跳转'审核列表'||'草稿箱'
-            props.history.push(auditState ? '/audit-manage/list' : '/news-manage/draft')
-            // 通知框
-            notification.info({
-                message: `通知`,
-                description:
-                  `您可以到${auditState ? '审核列表' : '草稿箱'}中查看您的新闻`,
-                placement: 'bottomRight',
-              });
-        })
-    }
     return (
         <div>
             {/* 页面标题 */}
@@ -132,9 +95,7 @@ export default function NewsAdd(props) {
             </div>
             {/* 第二步：新闻编辑（富文本编辑） */}
             <div className={current === 1 ? '' : style.active}>
-                <NewsEditor getContent={(value) => {
-                    setContent(value)
-                }}></NewsEditor>
+                <NewsEditor></NewsEditor>
             </div>
             <div className={current === 2 ? '' : style.active}>
 
@@ -143,8 +104,8 @@ export default function NewsAdd(props) {
             <Space style={{ marginTop: '50px' }}>
                 {
                     current === 2 && <Space>
-                        <Button type="primary" onClick={() => handleSave(0)}>保存草稿箱</Button>
-                        <Button danger onClick={() => handleSave(1)}>提交审核</Button>
+                        <Button type="primary">保存草稿箱</Button>
+                        <Button danger>提交审核</Button>
                     </Space>
                 }
                 {

@@ -50,7 +50,7 @@ export default function NewsAdd(props) {
 
     // 保存草稿箱|提交审核
     const handleSave = (auditState) => {
-        axios.post('/api/news', {
+        axios.post('/news', {
             ...formInfo,
             content,
             region: User.region ? User.region : '全球',
