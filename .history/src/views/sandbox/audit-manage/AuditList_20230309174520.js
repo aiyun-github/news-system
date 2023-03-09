@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button, Table, Space, Tag, notification } from 'antd'
 
-// 【审核管理-审核列表】
+// 新闻
 export default function AuditList(props) {
     // 存储表格列表数据
     const [dataSource, setDataSource] = useState()

@@ -76,7 +76,7 @@ export default function NewsCategory(props) {
             return item
         }))
         // 更改后台数据
-        axios.patch(`/api/categories/${record.id}`, {
+        axios.patch(`categories/${record.id}`, {
             title: record.title,
             value: record.title
         })

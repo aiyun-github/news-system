@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
-import { Button, Table, Space, Modal, Form, Input } from 'antd'
+import { Button, Table, Space, Modal, Form } from 'antd'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import axios from 'axios'
 const { confirm } = Modal
@@ -15,6 +15,12 @@ export default function NewsCategory(props) {
         })
     }, [])
 
+    const components = {
+        body: {
+            row: EditableRow,
+            cell: EditableCell,
+        },
+    };
     // 表格列
     const columns = [
         {
@@ -28,7 +34,7 @@ export default function NewsCategory(props) {
             onCell: (record) => ({
                 record,
                 editable: true,
-                dataIndex: 'title',
+                dataIndex: title,
                 title: '栏目名称',
                 handleSave,
             }),
@@ -68,7 +74,7 @@ export default function NewsCategory(props) {
         setDataSource(dataSource.map(item => {
             if (item.id === record.id) {
                 return {
-                    id: item.id,
+                    // id: item.id,
                     title: record.title,
                     value: record.title
                 }
@@ -76,7 +82,7 @@ export default function NewsCategory(props) {
             return item
         }))
         // 更改后台数据
-        axios.patch(`/api/categories/${record.id}`, {
+        axios.patch(`categories/${record.id}`, {
             title: record.title,
             value: record.title
         })
@@ -117,65 +123,15 @@ export default function NewsCategory(props) {
                 [dataIndex]: record[dataIndex],
             });
         };
-        const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values,
-                });
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
-        };
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <Form.Item
-                    style={{
-                        margin: 0,
-                    }}
-                    name={dataIndex}
-                    rules={[
-                        {
-                            required: true,
-                            message: `${title} is required.`,
-                        },
-                    ]}
-                >
-                    <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-                </Form.Item>
-            ) : (
-                <div
-                    className="editable-cell-value-wrap"
-                    style={{
-                        paddingRight: 24,
-                    }}
-                    onClick={toggleEdit}
-                >
-                    {children}
-                </div>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
-    };
-
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell,
-        },
-    };
-    return (
-        <>
-            <Table
-                components={components}
-                dataSource={dataSource}
-                columns={columns}
-                pagination={{ pageSize: 5 }}
-                rowKey='id'
-            />
-        </>
-    )
-}
+        return (
+            <>
+                <Table
+                    components={components}
+                    dataSource={dataSource}
+                    columns={columns}
+                    pagination={{ pageSize: 5 }}
+                    rowKey='id'
+                />
+            </>
+        )
+    }

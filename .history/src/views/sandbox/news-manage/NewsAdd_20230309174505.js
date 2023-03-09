@@ -6,13 +6,13 @@ import NewsEditor from '../../../components/news-manage/NewsEditor';
 const { Step } = Steps;
 const { Option } = Select;
 
-//【新闻管理-新闻更新】
-export default function NewsUpdate(props) {
+// 新闻撰写页
+export default function NewsAdd(props) {
     const [current, setCurrent] = useState(0) // 当前步骤
     const [categoryList, setCategoryList] = useState([]) // 新闻分类list
     const [formInfo, setFormInfo] = useState({}) // 表单内容
     const [content, setContent] = useState('') // 富文本内容
-    // const User = JSON.parse(localStorage.getItem('token')) // 登录的用户信息
+    const User = JSON.parse(localStorage.getItem('token')) // 登录的用户信息
 
     // 下一步
     const handleNext = () => {
@@ -49,32 +49,19 @@ export default function NewsUpdate(props) {
         })
     }, [])
 
-    // 获取新闻详情数据用于回显
-    useEffect(() => {
-        axios.get(`/api/news/${props.match.params.id}?_expand=category&_expand=role`).then(res => {
-            const { title, categoryId, content } = res.data
-            NewsForm.current.setFieldsValue({
-                title,
-                categoryId
-            })
-            setContent(content)
-        })
-    }, [props.match.params.id])
-
-
     // 保存草稿箱|提交审核
     const handleSave = (auditState) => {
-        axios.patch(`/api/news/${props.match.params.id}`, {
+        axios.post('/api/news', {
             ...formInfo,
             content,
-            // region: User.region ? User.region : '全球',
-            // author: User.username,
-            // roleId: User.roleId,
+            region: User.region ? User.region : '全球',
+            author: User.username,
+            roleId: User.roleId,
             auditState,
-            // publishState: 0,
-            // createTime: Date.now(),
-            // star: 0,
-            // view: 0,
+            publishState: 0,
+            createTime: Date.now(),
+            star: 0,
+            view: 0,
             // publishTime: 0,
         }).then(res => {
             // 路由跳转'审核列表'||'草稿箱'
@@ -93,7 +80,7 @@ export default function NewsUpdate(props) {
             {/* 页面标题 */}
             <PageHeader
                 className="site-page-header"
-                title="更新新闻"
+                title="撰写新闻"
                 onBack={() => props.history.goBack()}
                 subTitle="This is a subtitle"
             />
@@ -149,7 +136,7 @@ export default function NewsUpdate(props) {
             <div className={current === 1 ? '' : style.active}>
                 <NewsEditor getContent={(value) => {
                     setContent(value)
-                }} content={content}></NewsEditor>
+                }}></NewsEditor>
             </div>
             <div className={current === 2 ? '' : style.active}>
 

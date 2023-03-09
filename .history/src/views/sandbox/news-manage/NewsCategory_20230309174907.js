@@ -4,21 +4,16 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UploadOutlined
 import axios from 'axios'
 const { confirm } = Modal
 
-// 【新闻管理-草稿箱】
-export default function NewsDraft(props) {
+//【新闻管理-新闻分类】
+export default function NewsCategory(props) {
     // 存储表格列表数据
     const [dataSource, setDataSource] = useState()
 
-    const { username } = JSON.parse(localStorage.getItem('token'))
     useEffect(() => {
-        getData()
-    }, [username])
-    const getData = () => {
-        // 获取表格列表数据
-        axios.get(`/api/news?author=${username}&auditState=0&_expand=category`).then(res => {
+        axios.get('/api/categories').then(res => {
             setDataSource(res.data)
         })
-    }
+    }, [])
     // 表格列
     const columns = [
         {
@@ -34,22 +29,13 @@ export default function NewsDraft(props) {
             }
         },
         {
-            title: '作者',
-            dataIndex: 'author',
-        },
-        {
-            title: '新闻分类',
-            dataIndex: 'category',
-            render: (category) => category.title
+            title: '栏目名称',
+            dataIndex: 'title',
         },
         {
             title: '操作',
             render: (item) => {
                 return <Space>
-                    <Button type='link' icon={<EditOutlined />} onClick={() => {
-                        props.history.push(`/news-manage/update/${item.id}`)
-                    }}>编辑</Button>
-                    <Button type='link' icon={<UploadOutlined />} onClick={() => handleCheck(item.id)}>提交审核</Button>
                     <Button danger type='link' icon={<DeleteOutlined />} onClick={() => confirmMethod(item)}>删除</Button>
                 </Space>
             }

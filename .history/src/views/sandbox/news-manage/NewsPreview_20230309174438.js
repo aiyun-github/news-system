@@ -3,7 +3,7 @@ import { Descriptions, PageHeader } from 'antd';
 import moment from 'moment'
 import axios from 'axios';
 
-// 【新闻管理-新闻详情】
+// 新闻预览页（详情）
 export default function NewsPreview(props) {
     const [newsInfo, setNewsInfo] = useState(null)
 

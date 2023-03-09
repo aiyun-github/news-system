@@ -4,7 +4,7 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UploadOutlined
 import axios from 'axios'
 const { confirm } = Modal
 
-// 【新闻管理-草稿箱】
+// 草稿箱列表页
 export default function NewsDraft(props) {
     // 存储表格列表数据
     const [dataSource, setDataSource] = useState()

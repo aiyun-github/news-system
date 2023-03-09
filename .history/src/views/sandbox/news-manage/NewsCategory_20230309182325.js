@@ -28,7 +28,7 @@ export default function NewsCategory(props) {
             onCell: (record) => ({
                 record,
                 editable: true,
-                dataIndex: 'title',
+                dataIndex: record.title,
                 title: '栏目名称',
                 handleSave,
             }),
@@ -68,7 +68,7 @@ export default function NewsCategory(props) {
         setDataSource(dataSource.map(item => {
             if (item.id === record.id) {
                 return {
-                    id: item.id,
+                    // id: item.id,
                     title: record.title,
                     value: record.title
                 }
@@ -76,7 +76,7 @@ export default function NewsCategory(props) {
             return item
         }))
         // 更改后台数据
-        axios.patch(`/api/categories/${record.id}`, {
+        axios.patch(`categories/${record.id}`, {
             title: record.title,
             value: record.title
         })

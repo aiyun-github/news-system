@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
-import { Button, Table, Space, Modal, Form, Input } from 'antd'
+import { Button, Table, Space, Modal, Form } from 'antd'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import axios from 'axios'
 const { confirm } = Modal
@@ -15,6 +15,12 @@ export default function NewsCategory(props) {
         })
     }, [])
 
+    const components = {
+        body: {
+          row: EditableRow,
+          cell: EditableCell,
+        },
+      };
     // 表格列
     const columns = [
         {
@@ -28,10 +34,10 @@ export default function NewsCategory(props) {
             onCell: (record) => ({
                 record,
                 editable: true,
-                dataIndex: 'title',
+                dataIndex: title,
                 title: '栏目名称',
                 handleSave,
-            }),
+              }),
         },
         {
             title: '操作',
@@ -63,23 +69,11 @@ export default function NewsCategory(props) {
     }
     // 保存
     const handleSave = (record) => {
-        // 此处接口使用的json-server，所以这里分2步，真实开发中更改后直接在请求一次列表就行
-        // 更改前台显示
-        setDataSource(dataSource.map(item => {
-            if (item.id === record.id) {
-                return {
-                    id: item.id,
-                    title: record.title,
-                    value: record.title
-                }
-            }
-            return item
-        }))
-        // 更改后台数据
-        axios.patch(`/api/categories/${record.id}`, {
-            title: record.title,
-            value: record.title
-        })
+       setDataSource(dataSource.map(item => {
+        if(item.id === record.id) {
+            return 
+        }
+       }))
     }
 
     const EditableContext = React.createContext(null);
@@ -87,14 +81,14 @@ export default function NewsCategory(props) {
     const EditableRow = ({ index, ...props }) => {
         const [form] = Form.useForm();
         return (
-            <Form form={form} component={false}>
-                <EditableContext.Provider value={form}>
-                    <tr {...props} />
-                </EditableContext.Provider>
-            </Form>
+          <Form form={form} component={false}>
+            <EditableContext.Provider value={form}>
+              <tr {...props} />
+            </EditableContext.Provider>
+          </Form>
         );
-    };
-    const EditableCell = ({
+      };
+      const EditableCell = ({
         title,
         editable,
         children,
@@ -102,71 +96,33 @@ export default function NewsCategory(props) {
         record,
         handleSave,
         ...restProps
-    }) => {
+      }) => {
         const [editing, setEditing] = useState(false);
         const inputRef = useRef(null);
         const form = useContext(EditableContext);
         useEffect(() => {
-            if (editing) {
-                inputRef.current.focus();
-            }
+          if (editing) {
+            inputRef.current.focus();
+          }
         }, [editing]);
         const toggleEdit = () => {
-            setEditing(!editing);
-            form.setFieldsValue({
-                [dataIndex]: record[dataIndex],
-            });
+          setEditing(!editing);
+          form.setFieldsValue({
+            [dataIndex]: record[dataIndex],
+          });
         };
         const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values,
-                });
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
+          try {
+            const values = await form.validateFields();
+            toggleEdit();
+            handleSave({
+              ...record,
+              ...values,
+            });
+          } catch (errInfo) {
+            console.log('Save failed:', errInfo);
+          }
         };
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <Form.Item
-                    style={{
-                        margin: 0,
-                    }}
-                    name={dataIndex}
-                    rules={[
-                        {
-                            required: true,
-                            message: `${title} is required.`,
-                        },
-                    ]}
-                >
-                    <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-                </Form.Item>
-            ) : (
-                <div
-                    className="editable-cell-value-wrap"
-                    style={{
-                        paddingRight: 24,
-                    }}
-                    onClick={toggleEdit}
-                >
-                    {children}
-                </div>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
-    };
-
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell,
-        },
-    };
     return (
         <>
             <Table

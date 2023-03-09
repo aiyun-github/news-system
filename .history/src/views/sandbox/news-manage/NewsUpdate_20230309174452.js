@@ -6,7 +6,7 @@ import NewsEditor from '../../../components/news-manage/NewsEditor';
 const { Step } = Steps;
 const { Option } = Select;
 
-//【新闻管理-新闻更新】
+// 新闻更新页
 export default function NewsUpdate(props) {
     const [current, setCurrent] = useState(0) // 当前步骤
     const [categoryList, setCategoryList] = useState([]) // 新闻分类list

@@ -4,18 +4,16 @@ import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, UploadOutlined
 import axios from 'axios'
 const { confirm } = Modal
 
-// 【新闻管理-草稿箱】
-export default function NewsDraft(props) {
+//【新闻管理-新闻分类】
+export default function NewsCategory(props) {
     // 存储表格列表数据
     const [dataSource, setDataSource] = useState()
 
-    const { username } = JSON.parse(localStorage.getItem('token'))
     useEffect(() => {
         getData()
-    }, [username])
+    }, [])
     const getData = () => {
-        // 获取表格列表数据
-        axios.get(`/api/news?author=${username}&auditState=0&_expand=category`).then(res => {
+        axios.get('/api/category').then(res => {
             setDataSource(res.data)
         })
     }
