@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { Button, Table, Space, Tag, notification } from 'antd'
+import { Button, Table, Space, Tag } from 'antd'
 
 export default function Audit() {
     const [dataSource, setDataSource] = useState([])
@@ -51,26 +51,14 @@ export default function Audit() {
             title: '操作',
             render: (item) => {
                 return <Space>
-                    <Button type='link' onClick={() => handleAudit(item, 2, 1)}>通过</Button>
-                    <Button type='link' danger onClick={() => handleAudit(item, 3, 0)}>驳回</Button>
+                    <Button type='link' onClick={() => handleRervert(item)}>通过</Button>
+                    <Button type='link' danger onClick={() => handlePublish(item)}>驳回</Button>
                 </Space>
             }
         },
     ]
-    // 通过｜驳回
-    const handleAudit = (item, auditState, publishState) => {
-        setDataSource(dataSource.filter(v => v.id !== item.id))
-        axios.patch(`api/news/${item.id}`, {
-            auditState,
-            publishState
-        }).then(res => {
-            notification.info({
-                message: '通知',
-                description: '您可以到【审核管理/审核列表】中查看您的新闻的审核状态',
-                placement: 'bottomRight'
-            })
-        })
-    }
+    const handleRervert = () => {}
+    const handlePublish = () => {}
     return (
         <>
             <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 5 }} rowKey='id' />

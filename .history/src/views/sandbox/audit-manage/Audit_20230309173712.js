@@ -57,13 +57,13 @@ export default function Audit() {
             }
         },
     ]
-    // 通过｜驳回
     const handleAudit = (item, auditState, publishState) => {
         setDataSource(dataSource.filter(v => v.id !== item.id))
         axios.patch(`api/news/${item.id}`, {
             auditState,
             publishState
         }).then(res => {
+            props.history.push('/publish-manage/published')
             notification.info({
                 message: '通知',
                 description: '您可以到【审核管理/审核列表】中查看您的新闻的审核状态',
@@ -71,6 +71,7 @@ export default function Audit() {
             })
         })
     }
+    const handlePublish = () => {}
     return (
         <>
             <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 5 }} rowKey='id' />

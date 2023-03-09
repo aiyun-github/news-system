@@ -57,7 +57,6 @@ export default function Audit() {
             }
         },
     ]
-    // 通过｜驳回
     const handleAudit = (item, auditState, publishState) => {
         setDataSource(dataSource.filter(v => v.id !== item.id))
         axios.patch(`api/news/${item.id}`, {
@@ -71,6 +70,7 @@ export default function Audit() {
             })
         })
     }
+    const handlePublish = () => {}
     return (
         <>
             <Table dataSource={dataSource} columns={columns} pagination={{ pageSize: 5 }} rowKey='id' />

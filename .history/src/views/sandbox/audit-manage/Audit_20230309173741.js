@@ -57,7 +57,6 @@ export default function Audit() {
             }
         },
     ]
-    // 通过｜驳回
     const handleAudit = (item, auditState, publishState) => {
         setDataSource(dataSource.filter(v => v.id !== item.id))
         axios.patch(`api/news/${item.id}`, {
