@@ -58,7 +58,7 @@ function NewsRouter(props) {
         return rights.includes(item.key)
     }
     return (
-        <Spin spinning={props.isLoading}>
+        <Spin size='large' spinning={props.isLoading}>
             <Switch>
                 {
                     backRouteList.map(item => {

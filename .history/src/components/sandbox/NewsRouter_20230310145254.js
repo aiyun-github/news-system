@@ -36,7 +36,7 @@ const LocalRouterMap = {
     '/publish-manage/published': Published,
     '/publish-manage/sunset': Sunset,
 }
-function NewsRouter(props) {
+function NewsRouter() {
     const [backRouteList, setBackRouteList] = useState([])
     useEffect(() => {
         // 获取后端权限列表
@@ -58,7 +58,7 @@ function NewsRouter(props) {
         return rights.includes(item.key)
     }
     return (
-        <Spin spinning={props.isLoading}>
+        <Spin size='large' spinning={spinning}>
             <Switch>
                 {
                     backRouteList.map(item => {
@@ -76,8 +76,4 @@ function NewsRouter(props) {
         </Spin>
     )
 }
-
-const mapStateToProps = ({ LoadingReducer: { isLoading } }) => ({
-    isLoading,
-})
-export default connect(mapStateToProps)(NewsRouter)
+export default connect()(NewsRouter)

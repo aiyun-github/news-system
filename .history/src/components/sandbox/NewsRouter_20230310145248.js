@@ -1,23 +1,23 @@
 import { Spin } from 'antd';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Audit from '../../views/sandbox/audit-manage/Audit';
-import AuditList from '../../views/sandbox/audit-manage/AuditList';
-import Home from '../../views/sandbox/home/Home';
-import NewsAdd from '../../views/sandbox/news-manage/NewsAdd';
-import NewsCategory from '../../views/sandbox/news-manage/NewsCategory';
-import NewsDraft from '../../views/sandbox/news-manage/NewsDraft';
-import NewsPreview from '../../views/sandbox/news-manage/NewsPreview';
-import NewsUpdate from '../../views/sandbox/news-manage/NewsUpdate';
-import NoPermission from '../../views/sandbox/no-permission/NoPermission';
-import Published from '../../views/sandbox/publish-manage/Published';
-import Sunset from '../../views/sandbox/publish-manage/Sunset';
-import Unpublished from '../../views/sandbox/publish-manage/Unpublished';
-import RightList from '../../views/sandbox/right-manage/RightList';
-import RoleList from '../../views/sandbox/right-manage/RoleList';
-import UserList from '../../views/sandbox/user-manage/UserList';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import Audit from '../../views/sandbox/audit-manage/Audit'
+import AuditList from '../../views/sandbox/audit-manage/AuditList'
+import Home from '../../views/sandbox/home/Home'
+import NewsAdd from '../../views/sandbox/news-manage/NewsAdd'
+import NewsCategory from '../../views/sandbox/news-manage/NewsCategory'
+import NewsDraft from '../../views/sandbox/news-manage/NewsDraft'
+import NewsPreview from '../../views/sandbox/news-manage/NewsPreview'
+import NewsUpdate from '../../views/sandbox/news-manage/NewsUpdate'
+import NoPermission from '../../views/sandbox/no-permission/NoPermission'
+import Published from '../../views/sandbox/publish-manage/Published'
+import Sunset from '../../views/sandbox/publish-manage/Sunset'
+import Unpublished from '../../views/sandbox/publish-manage/Unpublished'
+import RightList from '../../views/sandbox/right-manage/RightList'
+import RoleList from '../../views/sandbox/right-manage/RoleList'
+import UserList from '../../views/sandbox/user-manage/UserList'
+import {connect} from 'react-redux'
 
 // 路由和组件映射
 const LocalRouterMap = {
@@ -36,7 +36,7 @@ const LocalRouterMap = {
     '/publish-manage/published': Published,
     '/publish-manage/sunset': Sunset,
 }
-function NewsRouter(props) {
+function NewsRouter() {
     const [backRouteList, setBackRouteList] = useState([])
     useEffect(() => {
         // 获取后端权限列表
@@ -58,7 +58,7 @@ function NewsRouter(props) {
         return rights.includes(item.key)
     }
     return (
-        <Spin spinning={props.isLoading}>
+        <Spin size='large' spinning={spinning}>
             <Switch>
                 {
                     backRouteList.map(item => {
@@ -76,8 +76,4 @@ function NewsRouter(props) {
         </Spin>
     )
 }
-
-const mapStateToProps = ({ LoadingReducer: { isLoading } }) => ({
-    isLoading,
-})
-export default connect(mapStateToProps)(NewsRouter)
+export default connect()(NewsRouter)

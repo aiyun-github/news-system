@@ -11,9 +11,9 @@ axios.defaults.baseURL = '/'
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
     // 显示loading
-    store.dispatch({
+    store.dispatch({ 
         type: 'change_loading',
-        payload: true
+        playod:
     })
     return config;
 }, function (error) {
@@ -23,17 +23,11 @@ axios.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
-    // 隐藏loading
-    store.dispatch({
-        type: 'change_loading',
-        payload: false
-    })
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
     return response;
 }, function (error) {
-    // 隐藏loading
-    store.dispatch({
-        type: 'change_loading',
-        payload: false
-    })
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
     return Promise.reject(error);
 });
