@@ -10,7 +10,7 @@ const reducer = combineReducers({
     LoadingReducer,
 })
 
-// 状态持久化 https://github.com/rt2zz/redux-persist
+// 状态持久化
 const persistConfig = {
     key: 'root',
     storage,

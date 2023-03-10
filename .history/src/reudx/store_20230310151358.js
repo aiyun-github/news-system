@@ -10,11 +10,9 @@ const reducer = combineReducers({
     LoadingReducer,
 })
 
-// 状态持久化 https://github.com/rt2zz/redux-persist
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['LoadingReducer'] // 黑名单（不做持久化）
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)
