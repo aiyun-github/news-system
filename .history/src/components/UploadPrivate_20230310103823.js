@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Upload, Modal, message } from "antd";
-import { CloudUploadOutlined } from '@ant-design/icons'
+import { CloudUploadOutlined } from '@ant-design/icons';
+import { Modal, Upload } from "antd";
+import React, { useEffect, useState } from "react";
 function mergeFileList(fileList, callback) {
   let status = fileList.reduce((total, current) => {
     return total && (current.status !== 'uploading')
