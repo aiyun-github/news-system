@@ -1,8 +1,8 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import './App.css'
-import store from './reudx/store'
 import IndexRouter from './router/IndexRouter'
+import './App.css'
+import { Provider } from 'react-redux'
+import store from './reudx/store'
 
 export default function App() {
     return <Provider store={store}>

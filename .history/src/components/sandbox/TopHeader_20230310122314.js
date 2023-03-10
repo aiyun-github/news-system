@@ -48,8 +48,8 @@ function TopHeader(props) {
           })} */}
             {
                 props.isCollapsed
-                    ? <MenuUnfoldOutlined onClick={() => props.changeCollapsed()} />
-                    : <MenuFoldOutlined onClick={() => props.changeCollapsed()} />
+                    ? <MenuUnfoldOutlined onClick={changeCollapsed} />
+                    : <MenuFoldOutlined onClick={changeCollapsed} />
 
             }
             <div style={{ float: 'right' }}>

@@ -11,6 +11,11 @@ const { Header } = Layout;
 
 // 顶部header组件
 function TopHeader(props) {
+    const [collapsed, setCollapsed] = useState(false)
+    const changeCollapsed = () => {
+        setCollapsed(!collapsed)
+    }
+
     const { role: { roleName }, username } = JSON.parse(localStorage.getItem('token'))
 
     const items = [
@@ -47,9 +52,9 @@ function TopHeader(props) {
             onClick: () => setCollapsed(!collapsed),
           })} */}
             {
-                props.isCollapsed
-                    ? <MenuUnfoldOutlined onClick={() => props.changeCollapsed()} />
-                    : <MenuFoldOutlined onClick={() => props.changeCollapsed()} />
+                collapsed
+                    ? <MenuUnfoldOutlined onClick={changeCollapsed} />
+                    : <MenuFoldOutlined onClick={changeCollapsed} />
 
             }
             <div style={{ float: 'right' }}>
@@ -66,18 +71,9 @@ function TopHeader(props) {
         </Header>
     )
 }
-const mapStateToProps = ({CollApsedReducer: {isCollapsed}}) => {
+const mapStateToProps = ({CollApsedReducer: {isCollapsde}}) => {
     return {
-        isCollapsed,
+        a: 1,
     }
 }
-
-const mapDispatchToProps = {
-    changeCollapsed() {
-        return {
-            type: 'change_collapsed',
-            // payload,
-        }
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TopHeader))
+export default connect(mapStateToProps)(withRouter(TopHeader))

@@ -4,7 +4,7 @@ import { Layout, Menu } from 'antd';
 import './index.css'
 import { withRouter } from 'react-router-dom'
 import axios from 'axios'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 const { Sider } = Layout;
 
 // 侧边栏菜单组件
@@ -56,7 +56,7 @@ function SideMenu(props) {
     const selectedKeys = [props.location.pathname]
     const defaultOpenKeys = ['/' + props.location.pathname.split('/')[1]]
     return (
-        <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
+        <Sider trigger={null} collapsible collapsed={false}>
             <div className='side-wrap'>
                 <div className="logo" >NEWS-SYSTEM</div>
                 <Menu
@@ -73,7 +73,10 @@ function SideMenu(props) {
     )
 }
 
-const mapStateToProps = ({ CollApsedReducer: { isCollapsed } }) => ({
-    isCollapsed,
-})
+const mapStateToProps = ({CollApsedReducer: {isCollapsed}}) => {
+    return {
+        isCollapsed,
+    }
+}
+
 export default connect(mapStateToProps)(withRouter(SideMenu))

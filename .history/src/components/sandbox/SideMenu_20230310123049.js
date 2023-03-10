@@ -56,7 +56,7 @@ function SideMenu(props) {
     const selectedKeys = [props.location.pathname]
     const defaultOpenKeys = ['/' + props.location.pathname.split('/')[1]]
     return (
-        <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
+        <Sider trigger={null} collapsible collapsed={false}>
             <div className='side-wrap'>
                 <div className="logo" >NEWS-SYSTEM</div>
                 <Menu

@@ -48,8 +48,8 @@ function TopHeader(props) {
           })} */}
             {
                 props.isCollapsed
-                    ? <MenuUnfoldOutlined onClick={() => props.changeCollapsed()} />
-                    : <MenuFoldOutlined onClick={() => props.changeCollapsed()} />
+                    ? <MenuUnfoldOutlined onClick={changeCollapsed} />
+                    : <MenuFoldOutlined onClick={changeCollapsed} />
 
             }
             <div style={{ float: 'right' }}>
@@ -75,9 +75,8 @@ const mapStateToProps = ({CollApsedReducer: {isCollapsed}}) => {
 const mapDispatchToProps = {
     changeCollapsed() {
         return {
-            type: 'change_collapsed',
-            // payload,
+            type: 'change_collapsed'
         }
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TopHeader))
+export default connect(mapStateToProps)(withRouter(TopHeader))
