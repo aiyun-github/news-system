@@ -3,7 +3,7 @@ import {
     MenuUnfoldOutlined,
     UserOutlined
 } from '@ant-design/icons';
-import { Avatar, Dropdown, Layout, Space } from 'antd';
+import { Avatar, Dropdown, Layout } from 'antd';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -52,7 +52,7 @@ function TopHeader(props) {
                     : <MenuFoldOutlined onClick={() => props.changeCollapsed()} />
 
             }
-            <Space style={{ float: 'right' }}>
+            <div style={{ float: 'right' }}>
                 <a href='#/news'>去前台</a>
                 <span>欢迎<span style={{color: '#1890ff'}}>{username}</span>回来</span>
                 <Dropdown
@@ -63,7 +63,7 @@ function TopHeader(props) {
                 >
                     <Avatar size="large" icon={<UserOutlined />} />
                 </Dropdown>
-            </Space>
+            </div>
         </Header>
     )
 }
