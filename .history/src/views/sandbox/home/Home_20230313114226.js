@@ -97,7 +97,7 @@ export default function Home() {
         console.log(list, 'list')
         let myChart
         // 避免多次创建
-        if(!picChart) {
+        if(picChart) {
             myChart = echarts.init(pieRef.current);
             setPicChart(myChart)
         } else {

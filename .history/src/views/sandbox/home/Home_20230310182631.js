@@ -9,9 +9,7 @@ const { Meta } = Card;
 export default function Home() {
     const [viewList, setViewList] = useState([])
     const [starList, setStarList] = useState([])
-    const [allList, setAllList] = useState([])
     const [open, setOpen] = useState(false)
-    const [picChart, setPicChart] = useState(null)
     const barRef = useRef(null)
     const pieRef = useRef(null)
 
@@ -31,7 +29,6 @@ export default function Home() {
 
     useEffect(() => {
         axios.get('/api/news?publishState=2&_expand=category').then(res => {
-            setAllList(res.data)
             renderBarView(_.groupBy(res.data, item => item.category.title))
         })
         // 清除事件
@@ -43,10 +40,10 @@ export default function Home() {
     // 新闻分类柱状图
     const renderBarView = (obj) => {
         // 基于准备好的dom，初始化echarts实例
-        let myChart = echarts.init(barRef.current);
+        var myChart = echarts.init(barRef.current);
 
         // 指定图表的配置项和数据
-        let option = {
+        var option = {
             title: {
                 text: '新闻分类图示'
             },
@@ -84,29 +81,13 @@ export default function Home() {
 
     // 个人新闻分类饼状图
     const renderPieView = (obj) => {
-        // 数据处理
-        let currentList = allList.filter(item => item.author = username)
-        let groupObj = _.groupBy(currentList, item => item.category.title)
-        let list = []
-        for (const i in groupObj) {
-            list.push({
-                name: i,
-                value: groupObj[i].length,
-            })
-        }
-        console.log(list, 'list')
-        let myChart
-        // 避免多次创建
-        if(!picChart) {
-            myChart = echarts.init(pieRef.current);
-            setPicChart(myChart)
-        } else {
-            myChart = picChart
-        }
-        let option = {
+        var myChart = echarts.init(pieRef.current);
+        var option;
+
+        option = {
             title: {
-                text: '当前用户新闻分类图示',
-                // subtext: 'Fake Data',
+                text: 'Referer of a Website',
+                subtext: 'Fake Data',
                 left: 'center'
             },
             tooltip: {
@@ -118,10 +99,16 @@ export default function Home() {
             },
             series: [
                 {
-                    name: '发布数量',
+                    name: 'Access From',
                     type: 'pie',
                     radius: '50%',
-                    data: list,
+                    data: [
+                        { value: 1048, name: 'Search Engine' },
+                        { value: 735, name: 'Direct' },
+                        { value: 580, name: 'Email' },
+                        { value: 484, name: 'Union Ads' },
+                        { value: 300, name: 'Video Ads' }
+                    ],
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -131,7 +118,8 @@ export default function Home() {
                     }
                 }
             ]
-        }
+        };
+
         option && myChart.setOption(option);
     }
 
@@ -174,11 +162,7 @@ export default function Home() {
                             <SettingOutlined
                                 key="setting"
                                 onClick={() => {
-                                    setTimeout(() => {
-                                        setOpen(true)
-                                        // init初始化
-                                        renderPieView()
-                                    }, 0)
+                                    setOpen(true)
                                 }}
                             />,
                             <EditOutlined key="edit" />,

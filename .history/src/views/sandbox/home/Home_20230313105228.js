@@ -87,26 +87,20 @@ export default function Home() {
         // 数据处理
         let currentList = allList.filter(item => item.author = username)
         let groupObj = _.groupBy(currentList, item => item.category.title)
-        let list = []
-        for (const i in groupObj) {
-            list.push({
-                name: i,
-                value: groupObj[i].length,
-            })
-        }
-        console.log(list, 'list')
         let myChart
         // 避免多次创建
-        if(!picChart) {
+        if(picChart) {
             myChart = echarts.init(pieRef.current);
             setPicChart(myChart)
         } else {
             myChart = picChart
         }
-        let option = {
+        let option;
+
+        option = {
             title: {
-                text: '当前用户新闻分类图示',
-                // subtext: 'Fake Data',
+                text: 'Referer of a Website',
+                subtext: 'Fake Data',
                 left: 'center'
             },
             tooltip: {
@@ -118,10 +112,16 @@ export default function Home() {
             },
             series: [
                 {
-                    name: '发布数量',
+                    name: 'Access From',
                     type: 'pie',
                     radius: '50%',
-                    data: list,
+                    data: [
+                        { value: 1048, name: 'Search Engine' },
+                        { value: 735, name: 'Direct' },
+                        { value: 580, name: 'Email' },
+                        { value: 484, name: 'Union Ads' },
+                        { value: 300, name: 'Video Ads' }
+                    ],
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -131,7 +131,8 @@ export default function Home() {
                     }
                 }
             ]
-        }
+        };
+
         option && myChart.setOption(option);
     }
 

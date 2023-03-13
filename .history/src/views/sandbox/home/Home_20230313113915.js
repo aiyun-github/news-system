@@ -94,10 +94,9 @@ export default function Home() {
                 value: groupObj[i].length,
             })
         }
-        console.log(list, 'list')
         let myChart
         // 避免多次创建
-        if(!picChart) {
+        if(picChart) {
             myChart = echarts.init(pieRef.current);
             setPicChart(myChart)
         } else {
